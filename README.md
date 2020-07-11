@@ -40,56 +40,65 @@ npm install
 ## Server Endpoints and API routes
 
 
-### Create listing
-  * POST `/api/:placeID`
+### Create reservation for a listing
+  * POST `/api/:placeID/bookings/:bookingID`
 
 **Success Status Code:** `201`
+
+**Error Status Code:** `404: listing not found`
 
 **Request Body**: Expects JSON with the following keys.
 
 ```json
     {
       "id": "Number",
-      "nightly_fee": "Number",
-      "cleaning_fee": "Number",
-      "occupancy_tax_rate": "Number",
-      "avg_rating": "Number",
-      "reviews": "Number",
-      "city": "String",
-      "max_capacity": "Number",
-      "bookings": [{
-        "checkin": "Date",
-        "checkout": "Date",
-        "guests": {
-          "adults": "Number",
-          "children": "Number",
-          "infants": "Number"
-        }
-      }]
+      "checkin": "Date",
+      "checkout": "Date",
+      "guests": {
+        "adults": "Number",
+        "children": "Number",
+        "infants": "Number"
+      }
     }
 ```
 
-### Read listing info
-  * GET `/api/:placeID`
+### Read all reservations for a specific listing
+  * GET `/api/:placeID/bookings`
 
 **Path Parameters:**
   * `placeID` listing id
 
 **Success Status Code:** `200`
 
+**Erorr Status Code:** `404: listing not found`
+
 **Returns:** JSON
 
 ```json
     {
       "id": "Number",
-      "nightly_fee": "Number",
-      "cleaning_fee": "Number",
-      "occupancy_tax_rate": "Number",
-      "avg_rating": "Number",
-      "reviews": "Number",
-      "city": "String",
-      "max_capacity": "Number",
       "bookings": [{
+        "id": "Number",
+        "checkin": "Date",
+        "checkout": "Date",
+        "guests": {
+          "adults": "Number",
+          "children": "Number",
+          "infants": "Number"
+        }
+      },
+      {
+        "id": "Number",
+        "checkin": "Date",
+        "checkout": "Date",
+        "guests": {
+          "adults": "Number",
+          "children": "Number",
+          "infants": "Number"
+        }
+      },
+      {
+        "id": "Number",
         "checkin": "Date",
         "checkout": "Date",
         "guests": {
@@ -101,34 +110,39 @@ npm install
     }
 ```
 
-### Update listing info
-  * PATCH `/api/:placeID`
+### Update reservation info for a specific reservation for a listing
+  * PATCH `/api/:placeID/bookings/:bookingID`
 
 **Path Parameters:**
   * `placeID` listing id
+  * `bookingID` booking id
 
 **Success Status Code:** `204`
+
+**Error Status Code:** `404: booking not found`
 
 **Request Body**: Expects JSON with any of the following keys (include only keys to be updated)
 
 ```json
     {
-     "bookings": [{
-        "checkin": "Date",
-        "checkout": "Date",
-        "guests": {
-          "adults": "Number",
-          "children": "Number",
-          "infants": "Number"
-        }
-      }]
+      "id": "Number",
+      "checkin": "Date",
+      "checkout": "Date",
+      "guests": {
+        "adults": "Number",
+        "children": "Number",
+        "infants": "Number"
+      }
     }
 ```
 
-### Delete listing
-  * DELETE `/api/:placeID`
+### Delete a reservation for a specific listing
+  * DELETE `/api/:placeID/booking/:bookingID`
 
 **Path Parameters:**
   * `placeID` listing id
+  * `bookingID` booking id
 
 **Success Status Code:** `204`
+
+**Error Status Code:** `404: booking not found`
