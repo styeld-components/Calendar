@@ -19,5 +19,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.get('/api/:placeID', Controller.find);
 // patch request
 app.patch('/api/:placeID', Controller.patch);
+//post request
+app.post('/api', Controller.create);
+//delete request
+app.delete('/api/:placeID',Controller.del);
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
