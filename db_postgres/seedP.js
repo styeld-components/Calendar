@@ -8,65 +8,30 @@ const bookingsBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_cla
 const billingsBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
 const totalListings = 10000000;
-const totalBookings = 50000000;
+const halfBookings = 25000000;
 const totalBillings = 50000000;
 
 //Seed Listings
-const listingsGen = () => {
-  var j = 0;
-  let count = 0;
-  listingsBar.start(4, 0);
+const writeListings = fs.createWriteStream('./db_postgres/csv/listings.csv');
+writeListings.write('listing_id,nightly_fee,cleaning_fee,occupancy_tax_rate,avg_rating,reviews,city,max_occupancy\n', 'utf8');
 
-  while (j < 4) {
-    const writer = csvWriter();
-    let fileNum = j + 1;
-    writer.pipe(fs.createWriteStream(`./db_postgres/csv/listings${fileNum}.csv`));
-    //change to correct size for actual seeding!!!
-    for (var i = 0; i < totalListings; i += 1) {
-      writer.write({
-        listing_id: count + i,
-        nightly_fee: Math.ceil(Math.random() * 300) + 60,
-        cleaning_fee: Math.ceil(Math.random() * 60) + 20,
-        occupancy_tax_rate:  ((Math.round((Math.random()*.05)*1000)/1000) + .08).toString().slice(0, 4),
-        avg_rating: Math.round((Math.random() * 5) * 100)/100,
-        reviews: (Math.floor(Math.random() * 1000)),
-        city: faker.address.city(),
-        max_capacity: Math.ceil(Math.random() * 9) + 1
-      })
-    }
-    writer.end();
-    listingsBar.increment();
-    count += totalListings;
-    j += 1;
-  }
-  listingsBar.stop();
-}
-
-
-//Seed Bookings
-const guestRange = (min, max) => Math.floor((Math.random() * (max - min)) + min);
-
-const writeBookings = fs.createWriteStream('./db_postgres/csv/bookings.csv');
-writeBookings.write('id,checkin,checkout,adults,children,infants,listing_id,billingInfo\n', 'utf8');
-
-function bookingsGen(i, writer, encoding, callback) {
-  // let i = 50;
-  let id = 0;
+function listingsGen(i, writer, encoding, callback) {
+  let listing_id = 0;
   function write() {
     let ok = true;
     do {
       i -= 1;
-      id += 1;
-      const checkin = faker.date.between('2020-08-08', '2020-08-10');
-      const checkout= faker.date.between('2020-08-10', '2020-08-15');
-      const adults = guestRange(1, 7);
-      const children =  guestRange(1, 5);
-      const infants = guestRange(0, 3);
-      const listing_id = faker.random.number(totalListings) + 1;
-      const billingInfo = faker.random.number(totalBillings) + 1;
-      const data = `${id},${checkin},${checkout},${adults},${children},${infants},${listing_id},${billingInfo}\n`;
-      if (id % 100000 === 0) {
-        console.log('dun dun dun, another 100k bites the....bookingscsv', id);
+      listing_id += 1;
+      const nightly_fee = Math.ceil(Math.random() * 300) + 60;
+      const cleaning_fee = Math.ceil(Math.random() * 60) + 20;
+      const occupancy_tax_rate = ((Math.round((Math.random()*.05)*1000)/1000) + .08).toString().slice(0, 4);
+      const avg_rating = Math.round((Math.random() * 5) * 100)/100;
+      const reviews = (Math.floor(Math.random() * 1000));
+      const city = faker.address.city();
+      const max_capacity = Math.ceil(Math.random() * 9) + 1;
+      const data = `${listing_id},${nightly_fee},${cleaning_fee},${occupancy_tax_rate},${avg_rating},${reviews},${city},${max_capacity}\n`;
+      if (listing_id % 100000 === 0) {
+        console.log('dun dun dun, another 100k bites the....listingscsv', listing_id);
       }
       if (i === 0) {
         writer.write(data, encoding, callback);
@@ -86,37 +51,51 @@ write()
 }
 
 
-// const bookingsGen = () => {
-//   var j = 0;
-//   let count = 0;
-//   bookingsBar.start(4, 0);
+//Seed Bookings
+const guestRange = (min, max) => Math.floor((Math.random() * (max - min)) + min);
 
-//   while (j < 4) {
-//     const writer = csvWriter();
-//     let fileNum = j + 1;
-//     writer.pipe(fs.createWriteStream(`./db_postgres//csv/bookings${fileNum}.csv`));
-//     //change to correct size for actual seeding!!!
-//     for (var i = 0; i < totalBookings; i += 1) {
-//       writer.write({
-//         booking_id: count + i,
-//         checkin: faker.date.between('2020-08-08', '2020-08-10'),
-//         checkout: faker.date.between('2020-08-10', '2020-08-15'),
-//         adults: guestRange(1, 7),
-//         children: guestRange(1, 5),
-//         infants: guestRange(0, 3),
-//         listing_id: faker.random.number(totalListings) + 1,
-//         billingInfo: faker.random.number(totalBillings) + 1
-//       })
-//     }
-//     writer.end();
-//     bookingsBar.increment();
-//     count += totalBookings;
-//     j += 1;
-//   }
-//   bookingsBar.stop();
-// }
+const writeBookings = fs.createWriteStream('./db_postgres/csv/bookings.csv');
+writeBookings.write('booking_id,checkin,checkout,adults,children,infants,listing_id,billingInfo\n', 'utf8');
+
+function bookingsGen(i, writer, encoding, callback) {
+  // let i = 50;
+  let booking_id = 0;
+  //let booking_id = 25000001
+  function write() {
+    let ok = true;
+    do {
+      i -= 1;
+      booking_id += 1;
+      const checkin = faker.date.between('2020-08-08', '2020-08-10');
+      const checkout= faker.date.between('2020-08-10', '2020-08-15');
+      const adults = guestRange(1, 7);
+      const children =  guestRange(1, 5);
+      const infants = guestRange(0, 3);
+      const listing_id = faker.random.number(totalListings) + 1;
+      const billingInfo = faker.random.number(totalBillings) + 1;
+      const data = `${booking_id},${checkin},${checkout},${adults},${children},${infants},${listing_id},${billingInfo}\n`;
+      if (booking_id % 100000 === 0) {
+        console.log('dun dun dun, another 100k bites the....bookingscsv', booking_id);
+      }
+      if (i === 0) {
+        writer.write(data, encoding, callback);
+      } else {
+// see if we should continue, or wait
+// don't pass the callback, because we're not done yet.
+        ok = writer.write(data, encoding);
+      }
+    } while (i > 0 && ok);
+    if (i > 0) {
+// had to stop early!
+// write some more once it drains
+      writer.once('drain', write);
+    }
+  }
+write()
+}
 
 
+//Seed Billing Info
 
 const paymentType = () => {
   const types = ['cash', 'credit card', 'debit card', 'check', 'reward points', 'bitcoin', 'contact-less payment'];
@@ -134,26 +113,25 @@ const creditCardNum = () => {
   return cardNum;
 }
 
-
 const writeBillingInfo = fs.createWriteStream('./db_postgres/csv/billingsInfo.csv');
-writeBillingInfo.write('id,first_name,last_name,payment_type,CCNum\n', 'utf8');
+writeBillingInfo.write('billing_id,first_name,last_name,payment_type,CCNum\n', 'utf8');
 
 function billingsGen(i, writer, encoding, callback) {
   // let i = 50e6;
-  let id = 0;
+  let billing_id = 0;
   function write() {
     let ok = true;
     do {
       i -= 1;
-      id += 1;
+      billing_id += 1;
       const first_name = faker.name.firstName();
       const last_name= faker.name.lastName();
       const payment_type = paymentType();
       const CCNum =  creditCardNum();
 
-      const data = `${id},${first_name},${last_name},${payment_type},${CCNum}\n`;
-      if (id % 100000 === 0) {
-        console.log('dun dun dun, another 100k bites the....billingscsv', id);
+      const data = `${billing_id},${first_name},${last_name},${payment_type},${CCNum}\n`;
+      if (billing_id % 100000 === 0) {
+        console.log('dun dun dun, another 100k bites the....billingscsv', billing_id);
       }
       if (i === 0) {
         writer.write(data, encoding, callback);
@@ -172,37 +150,11 @@ function billingsGen(i, writer, encoding, callback) {
 write()
 }
 
-// const billingGen = () => {
-//   var j = 0;
-//   let count = 0;
-//   billingsBar.start(4, 0);
-//   while (j < 4) {
-//     const writer = csvWriter();
-//     let fileNum = j + 1;
+listingsGen(totalListings, writeListings, 'utf-8', () => {
+  writeListings.end();
+});
 
-//     writer.pipe(fs.createWriteStream(`./db_postgres/csv/billingInfo${fileNum}.csv`));
-//     //change to correct size for actual seeding!!!
-
-//     for (var i = 0; i < totalBillings; i += 1) {
-//       writer.write({
-//         billing_id: count + i,
-//         first_name: faker.name.firstName(),
-//         last_name: faker.name.lastName(),
-//         payment_type: paymentType(),
-//         CCNum: creditCardNum()
-//       });
-//     }
-//     writer.end();
-//     billingsBar.increment();
-//     count += totalBillings;
-//     j += 1;
-//   }
-//   billingsBar.stop();
-// }
-
-listingsGen();
-
-bookingsGen(totalBookings, writeBookings, 'utf-8', () => {
+bookingsGen(halfBookings, writeBookings, 'utf-8', () => {
   writeBookings.end();
 });
 

@@ -49,32 +49,12 @@ CREATE TABLE bookings (
 
 
 ---listings csv files
-COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings1.csv' DELIMITER ',' CSV HEADER;
-
-COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings2.csv' DELIMITER ',' CSV HEADER;
-
-COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings3.csv' DELIMITER ',' CSV HEADER;
-
-COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings4.csv' DELIMITER ',' CSV HEADER;
-
+COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings.csv' DELIMITER ',' CSV HEADER;
 
 
 ---billing info csv files
-COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingInfo1.csv' DELIMITER ',' CSV HEADER;
-
-COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingInfo2.csv' DELIMITER ',' CSV HEADER;
-
-COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingInfo3.csv' DELIMITER ',' CSV HEADER;
-
-COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingInfo4.csv' DELIMITER ',' CSV HEADER;
-
+COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingsInfo.csv' DELIMITER ',' CSV HEADER;
 
 
 ---bookings csv files
-COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings1.csv' DELIMITER ',' CSV HEADER;
-
-COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings2.csv' DELIMITER ',' CSV HEADER;
-
-COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings3.csv' DELIMITER ',' CSV HEADER;
-
-COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings4.csv' DELIMITER ',' CSV HEADER;
+COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings.csv' DELIMITER ',' CSV HEADER;
