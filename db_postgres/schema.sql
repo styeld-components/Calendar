@@ -1,36 +1,80 @@
+/*TO RUN THIS SCRIPT
+  cd into the folder
+  psql postgres
+  \i schema.sql
+
+  \l+ to show dbs
+*/
+
+\c postgres;
+
 DROP DATABASE IF EXISTS calendar;
 
 CREATE DATABASE calendar;
 
-USE calendar;
+\c calendar;
+-- USE calendar;
 
 
 CREATE TABLE listings (
-  listing_id SERIAL PRIMARY KEY,
+  listing_id INT NOT NULL PRIMARY KEY,
   nightly_fee INT,
   cleaning_fee INT,
   occupancy_tax_rate NUMERIC(4, 2),
   avg_rating NUMERIC(3,2),
   reviews INT,
-  city VARCHAR(20),
+  city VARCHAR(50),
   max_capacity INT
 );
 
-CREATE TABLE bookings (
-  booking_id SERIAL PRIMARY KEY,
-  checkin DATE,
-  checkout DATE,
-  adults INT,
-  children INT,
-  infants INT,
-  listing_id INT REFERENCES listings (listing_id)
-);
 
 CREATE TABLE billingInfo (
-  billing_id SERIAL PRIMARY KEY,
+  billing_id INT NOT NULL PRIMARY KEY ,
   first_name VARCHAR(50),
   last_name VARCHAR(50),
   payment_type VARCHAR(20),
-  booking_id INT REFERENCES bookings (booking_id)
+  CCNum BIGINT NOT NULL
 );
 
+CREATE TABLE bookings (
+  booking_id INT NOT NULL PRIMARY KEY,
+  checkin VARCHAR(250),
+  checkout VARCHAR(250),
+  adults INT,
+  children INT,
+  infants INT,
+  listing_id INT NOT NULL REFERENCES listings (listing_id),
+  billingInfo INT NOT NULL REFERENCES billingInfo (billing_id)
+);
+
+
+---listings csv files
+COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings1.csv' DELIMITER ',' CSV HEADER;
+
+COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings2.csv' DELIMITER ',' CSV HEADER;
+
+COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings3.csv' DELIMITER ',' CSV HEADER;
+
+COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings4.csv' DELIMITER ',' CSV HEADER;
+
+
+
+---billing info csv files
+COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingInfo1.csv' DELIMITER ',' CSV HEADER;
+
+COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingInfo2.csv' DELIMITER ',' CSV HEADER;
+
+COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingInfo3.csv' DELIMITER ',' CSV HEADER;
+
+COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingInfo4.csv' DELIMITER ',' CSV HEADER;
+
+
+
+---bookings csv files
+COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings1.csv' DELIMITER ',' CSV HEADER;
+
+COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings2.csv' DELIMITER ',' CSV HEADER;
+
+COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings3.csv' DELIMITER ',' CSV HEADER;
+
+COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings4.csv' DELIMITER ',' CSV HEADER;

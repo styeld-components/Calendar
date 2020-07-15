@@ -8,7 +8,7 @@ CREATE KEYSPACE IF NOT EXISTS calendar
 
 USE calendar;
 
-CREATE TABLE bookings (
+CREATE TABLE bookingsByListing (
   listing_id uuid,
   nightly_fee int,
   cleaning_fee int,
@@ -27,6 +27,7 @@ CREATE TABLE bookings (
   first_name text,
   last_name text,
   billing_id uuid,
-  PRIMARY KEY (listing_id, bookings_id)
+  CCNum int,
+  PRIMARY KEY (listing_id, checkin)
 );
 
