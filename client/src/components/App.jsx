@@ -5,7 +5,7 @@ import Guests from './Guests.jsx';
 import PriceBreakDown from './PriceBreakDown.jsx';
 import styles from '../../dist/style.css';
 
-const placeID = Math.ceil(Math.random() * 100);
+const listing_id = Math.ceil(Math.random() * 100);
 
 class App extends React.Component {
   constructor() {
@@ -30,10 +30,10 @@ class App extends React.Component {
 
   getData() {
     $.ajax({
-      url: `/api/${placeID}`,
+      url: `/api/${listing_id}`,
       type: 'GET',
       success: (data) => {
-        console.log(data[0]);
+        console.log(data);
         this.setState({
           info: data[0]
         })

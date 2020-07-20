@@ -1,14 +1,11 @@
 const fs = require('fs');
 const csvWriter = require('csv-write-stream');
-const cliProgress = require('cli-progress');
 const faker = require('faker');
 
-const listingsBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-const bookingsBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-const billingsBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+const { paymentType, creditCardNum, range } = require('../db_Helpers/SeedingHelpers.js');
 
 const totalListings = 10000000;
-const halfBookings = 25000000;
+const halfBookings = 50000000;
 const totalBillings = 50000000;
 
 //Seed Listings
@@ -52,7 +49,7 @@ write()
 
 
 //Seed Bookings
-const guestRange = (min, max) => Math.floor((Math.random() * (max - min)) + min);
+// const range = (min, max) => Math.floor((Math.random() * (max - min)) + min);
 
 const writeBookings = fs.createWriteStream('./db_postgres/csv/bookings.csv');
 writeBookings.write('booking_id,checkin,checkout,adults,children,infants,listing_id,billingInfo\n', 'utf8');
@@ -60,7 +57,7 @@ writeBookings.write('booking_id,checkin,checkout,adults,children,infants,listing
 function bookingsGen(i, writer, encoding, callback) {
   // let i = 50;
   let booking_id = 0;
-  //let booking_id = 25000001
+  // let booking_id = 25000001
   function write() {
     let ok = true;
     do {
@@ -68,11 +65,11 @@ function bookingsGen(i, writer, encoding, callback) {
       booking_id += 1;
       const checkin = faker.date.between('2020-08-08', '2020-08-10');
       const checkout= faker.date.between('2020-08-10', '2020-08-15');
-      const adults = guestRange(1, 7);
-      const children =  guestRange(1, 5);
-      const infants = guestRange(0, 3);
-      const listing_id = faker.random.number(totalListings) + 1;
-      const billingInfo = faker.random.number(totalBillings) + 1;
+      const adults = range(1, 7);
+      const children = range(1, 5);
+      const infants = range(0, 3);
+      const listing_id = range(1, totalListings);
+      const billingInfo = range(1, totalBillings);
       const data = `${booking_id},${checkin},${checkout},${adults},${children},${infants},${listing_id},${billingInfo}\n`;
       if (booking_id % 100000 === 0) {
         console.log('dun dun dun, another 100k bites the....bookingscsv', booking_id);
@@ -97,21 +94,21 @@ write()
 
 //Seed Billing Info
 
-const paymentType = () => {
-  const types = ['cash', 'credit card', 'debit card', 'check', 'reward points', 'bitcoin', 'contact-less payment'];
-  return types[Math.round((Math.random()*7)) - 1];
-}
+// const paymentType = () => {
+//   const types = ['cash', 'credit card', 'debit card', 'check', 'reward points', 'bitcoin', 'contact-less payment'];
+//   return types[Math.round((Math.random()*7)) - 1];
+// }
 
-const creditCardNum = () => {
-  let cardNum = '';
-  const randNum = () => Math.floor(Math.random() * Math.floor(9));
+// const creditCardNum = () => {
+//   let cardNum = '';
+//   const randNum = () => Math.floor(Math.random() * Math.floor(9));
 
-  while (cardNum.length < 16) {
-    let num = randNum();
-    cardNum += num;
-  }
-  return cardNum;
-}
+//   while (cardNum.length < 16) {
+//     let num = randNum();
+//     cardNum += num;
+//   }
+//   return cardNum;
+// }
 
 const writeBillingInfo = fs.createWriteStream('./db_postgres/csv/billingsInfo.csv');
 writeBillingInfo.write('billing_id,first_name,last_name,payment_type,CCNum\n', 'utf8');

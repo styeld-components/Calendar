@@ -58,3 +58,5 @@ COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billi
 
 ---bookings csv files
 COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings.csv' DELIMITER ',' CSV HEADER;
+
+-- COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings2.csv' DELIMITER ',' CSV HEADER;

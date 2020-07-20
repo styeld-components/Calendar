@@ -13,7 +13,9 @@
     "test": "jest",
     "webpack-prod": "webpack -p --mode=production",
     "seedP": "node db_postgres/SeedP.js",
-    "insertP": "node db_postgres/schema.sql"
+    "insertP": "node db_postgres/schema.sql",
+    "seedC": "node db_cassandra/SeedC.js",
+    "insertC": "node db_cassandra/schema.cql"
   },
   "dependencies": {
     "@babel/preset-env": "^7.10.3",
@@ -29,6 +31,7 @@
     "moment": "^2.27.0",
     "mongodb": "^3.5.9",
     "mongoose": "^5.9.19",
+    "newrelic": "^6.11.0",
     "nodemon": "^2.0.4",
     "pg": "^8.3.0",
     "react": "^16.13.1",

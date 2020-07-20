@@ -41,7 +41,7 @@ npm install
 
 
 ### Create reservation for a listing
-  * POST `/api/:placeID/bookings/:bookingID`
+  * POST `/api/:listing_id/bookings`
 
 **Success Status Code:** `201`
 
@@ -63,10 +63,10 @@ npm install
 ```
 
 ### Read all reservations for a specific listing
-  * GET `/api/:placeID/bookings`
+  * GET `/api/:listing_id/bookings`
 
 **Path Parameters:**
-  * `placeID` listing id
+  * `listing_id`
 
 **Success Status Code:** `200`
 
@@ -111,11 +111,11 @@ npm install
 ```
 
 ### Update reservation info for a specific reservation for a listing
-  * PATCH `/api/:placeID/bookings/:bookingID`
+  * PATCH `/api/:listing_id/bookings/:booking_id`
 
 **Path Parameters:**
-  * `placeID` listing id
-  * `bookingID` booking id
+  * `listing_id`
+  * `booking_id`
 
 **Success Status Code:** `204`
 
@@ -137,11 +137,11 @@ npm install
 ```
 
 ### Delete a reservation for a specific listing
-  * DELETE `/api/:placeID/booking/:bookingID`
+  * DELETE `/api/:listing_id/booking/:booking_id`
 
 **Path Parameters:**
-  * `placeID` listing id
-  * `bookingID` booking id
+  * `listing_id`
+  * `booking_id`
 
 **Success Status Code:** `204`
 
