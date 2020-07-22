@@ -33,9 +33,9 @@ class App extends React.Component {
       url: `/api/${listing_id}`,
       type: 'GET',
       success: (data) => {
-        console.log(data);
+        console.log('front end', data.rows);
         this.setState({
-          info: data[0]
+          info: data.rows[0]
         })
       },
       error: (err) => {

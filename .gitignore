@@ -23,5 +23,20 @@ coverage
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
 
+#webpack
+client/dist/bundle.js
+
 # all csv files
 *.csv
+*.zip
+
+#Postgres config
+postgres_config.js
+
+#new relic config file
+newrelic.js
+newrelic_agent.log
+
+#EC2 commands
+EC2.js
+

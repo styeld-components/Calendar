@@ -8,9 +8,9 @@ const totalListings = 10000000;
 const halfBookings = 50000000;
 const totalBillings = 50000000;
 
-//Seed Listings
-const writeListings = fs.createWriteStream('./db_postgres/csv/listings.csv');
-writeListings.write('listing_id,nightly_fee,cleaning_fee,occupancy_tax_rate,avg_rating,reviews,city,max_occupancy\n', 'utf8');
+// //Seed Listings
+// const writeListings = fs.createWriteStream('./db_postgres/csv/listings.csv');
+// writeListings.write('listing_id,nightly_fee,cleaning_fee,occupancy_tax_rate,avg_rating,reviews,city,max_occupancy\n', 'utf8');
 
 function listingsGen(i, writer, encoding, callback) {
   let listing_id = 0;
@@ -51,14 +51,18 @@ write()
 //Seed Bookings
 // const range = (min, max) => Math.floor((Math.random() * (max - min)) + min);
 
-const writeBookings = fs.createWriteStream('./db_postgres/csv/bookings.csv');
-writeBookings.write('booking_id,checkin,checkout,adults,children,infants,listing_id,billingInfo\n', 'utf8');
+const writeBookings1 = fs.createWriteStream('./db_postgres/csv/bookings1.csv');
+writeBookings1.write('booking_id,checkin,checkout,adults,children,infants,listing_id,billingInfo\n', 'utf8');
 
-function bookingsGen(i, writer, encoding, callback) {
+const writeBookings2 = fs.createWriteStream('./db_postgres/csv/bookings2.csv');
+writeBookings2.write('booking_id,checkin,checkout,adults,children,infants,listing_id,billingInfo\n', 'utf8');
+
+function bookingsGen(i, writer1, writer2, encoding, callback) {
   // let i = 50;
   let booking_id = 0;
   // let booking_id = 25000001
   function write() {
+    let writer = i > 25000000 ? writeBookings1 : writeBookings2;
     let ok = true;
     do {
       i -= 1;
@@ -74,6 +78,7 @@ function bookingsGen(i, writer, encoding, callback) {
       if (booking_id % 100000 === 0) {
         console.log('dun dun dun, another 100k bites the....bookingscsv', booking_id);
       }
+
       if (i === 0) {
         writer.write(data, encoding, callback);
       } else {
@@ -110,8 +115,8 @@ write()
 //   return cardNum;
 // }
 
-const writeBillingInfo = fs.createWriteStream('./db_postgres/csv/billingsInfo.csv');
-writeBillingInfo.write('billing_id,first_name,last_name,payment_type,CCNum\n', 'utf8');
+// const writeBillingInfo = fs.createWriteStream('./db_postgres/csv/billingsInfo.csv');
+// writeBillingInfo.write('billing_id,first_name,last_name,payment_type,CCNum\n', 'utf8');
 
 function billingsGen(i, writer, encoding, callback) {
   // let i = 50e6;
@@ -147,14 +152,15 @@ function billingsGen(i, writer, encoding, callback) {
 write()
 }
 
-listingsGen(totalListings, writeListings, 'utf-8', () => {
-  writeListings.end();
+// listingsGen(totalListings, writeListings, 'utf-8', () => {
+//   writeListings.end();
+// });
+
+bookingsGen(halfBookings, writeBookings1, writeBookings2, 'utf-8', () => {
+  writeBookings1.end();
+  writeBookings2.end();
 });
 
-bookingsGen(halfBookings, writeBookings, 'utf-8', () => {
-  writeBookings.end();
-});
-
-billingsGen(totalBillings, writeBillingInfo, 'utf-8', () => {
-  writeBillingInfo.end();
-});
+// billingsGen(totalBillings, writeBillingInfo, 'utf-8', () => {
+//   writeBillingInfo.end();
+// });

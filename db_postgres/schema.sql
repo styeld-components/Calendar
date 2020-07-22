@@ -43,20 +43,37 @@ CREATE TABLE bookings (
   adults INT,
   children INT,
   infants INT,
-  listing_id INT NOT NULL REFERENCES listings (listing_id),
-  billingInfo INT NOT NULL REFERENCES billingInfo (billing_id)
+  listing_id INT NOT NULL,
+  -- REFERENCES listings (listing_id),
+  billingInfo INT NOT NULL
+  -- REFERENCES billingInfo (billing_id)
 );
 
 
 ---listings csv files
-COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings.csv' DELIMITER ',' CSV HEADER;
+-- COPY listings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/listings.csv' DELIMITER ',' CSV HEADER;
+COPY listings FROM '/tmp/listings.csv' DELIMITER ',' CSV HEADER;
+VACUUM listings;
+
 
 
 ---billing info csv files
-COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingsInfo.csv' DELIMITER ',' CSV HEADER;
+-- COPY billingInfo FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/billingsInfo.csv' DELIMITER ',' CSV HEADER;
+COPY billingInfo FROM '/tmp/billingsInfo.csv' DELIMITER ',' CSV HEADER;
+VACUUM billingInfo;
 
 
----bookings csv files
-COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings.csv' DELIMITER ',' CSV HEADER;
-
+-- ---bookings csv files
+-- COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings1.csv' DELIMITER ',' CSV HEADER;
 -- COPY bookings FROM '/Users/jaynein/Desktop/SDC/Calendar/db_postgres/csv/bookings2.csv' DELIMITER ',' CSV HEADER;
+
+COPY bookings FROM '/tmp/bookings1.csv' DELIMITER ',' CSV HEADER;
+COPY bookings FROM '/tmp/bookings2.csv' DELIMITER ',' CSV HEADER;
+VACUUM bookings;
+
+ALTER TABLE bookings ADD CONSTRAINT fk_listing FOREIGN KEY (listing_id) REFERENCES listings(listing_id);
+ALTER TABLE bookings ADD CONSTRAINT fk_billing FOREIGN KEY (billingInfo) REFERENCES billingInfo(billing_id);
+
+CREATE INDEX listing_idx ON bookings(listing_id);
+CREATE INDEX billing_idx ON bookings(billingInfo);
+

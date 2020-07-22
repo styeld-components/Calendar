@@ -1,4 +1,4 @@
-// const newRelic = require('newrelic');
+const newrelic = require('newrelic');
 const express = require('express');
 const bodyParser = require('body-parser');
 // const db = require('../database');
@@ -10,6 +10,7 @@ const Controller = require('./Controller.js');
 
 const app = express();
 const port = 3001;
+// const port = 80;
 
 app.use(cors());
 app.use('/calendar/', express.static(__dirname + '/../client/dist'));

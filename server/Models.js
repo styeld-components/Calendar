@@ -11,7 +11,7 @@ const Calendar = require('../db_postgres/index.js');
 // };
 
 const getAllBookings = (listing_id, callback) => {
-  const queryStr = `SELECT * FROM bookings WHERE listing_id = ${listing_id}`;
+  const queryStr = `SELECT * FROM bookings INNER JOIN listings ON bookings.listing_id = listings.listing_id WHERE bookings.listing_id = ${listing_id}`;
   Calendar.query(queryStr, callback);
 }
 
