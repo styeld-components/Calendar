@@ -5,7 +5,10 @@ import Guests from './Guests.jsx';
 import PriceBreakDown from './PriceBreakDown.jsx';
 import styles from '../../dist/style.css';
 
-const listing_id = Math.ceil(Math.random() * 100);
+// const listing_id = Math.ceil(Math.random() * 100);
+let splitUrl;
+let listing_id;
+
 
 class App extends React.Component {
   constructor() {
@@ -29,11 +32,14 @@ class App extends React.Component {
   }
 
   getData() {
+    const splitUrl = window.location.href.split('/');
+    let listing_id = splitUrl[splitUrl.length - 2];
+    if (!Number(listing_id)) { listing_id = 1; }
     $.ajax({
       url: `/api/${listing_id}`,
       type: 'GET',
       success: (data) => {
-        console.log('front end', data.rows);
+        // console.log('front end', data.rows);
         this.setState({
           info: data.rows[0]
         })

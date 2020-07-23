@@ -13,6 +13,11 @@ const port = 3001;
 // const port = 80;
 
 app.use(cors());
+
+app.use('/loaderio-f0c4f91c95f5e6cb7a3b90b29cbe5bce.txt', express.static(path.join(__dirname,'../loaderio-f0c4f91c95f5e6cb7a3b90b29cbe5bce.txt')))
+
+app.use('/', express.static(__dirname + '/../client/dist'));
+app.use('/listing_id', express.static(__dirname + '/../client/dist'));
 app.use('/calendar/', express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -29,10 +34,7 @@ app.patch('/api/:listing_id/bookings/:booking_id', (req, res) => {
 })
 //post request
 // app.post('/api/:placeID/bookings/:bookingID', Controller.create);
-app.post('/api/:listing_id/bookings', (req, res) => {
-  // Controller.reserveBooking(req, res);
-  console.log(req);
-})
+app.post('/api/:listing_id/bookings', Controller.reserveBooking);
 //delete request
 // app.delete('/api/:placeID/bookings/:bookingID',Controller.delete);
 app.delete('/api/:listing_id/bookings/:booking_id', (req, res) => {
