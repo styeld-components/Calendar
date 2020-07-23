@@ -6,7 +6,6 @@ function getAllBookings(req, res) {
     if (err) {
       res.status(404).send(err);
     } else {
-      // console.log('controller data', data);
       res.status(201).send(data);
     }
   });
