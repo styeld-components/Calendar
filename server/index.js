@@ -1,6 +1,7 @@
 const newrelic = require('newrelic');
 const express = require('express');
 const bodyParser = require('body-parser');
+const compression = require('compression');
 // const db = require('../database');
 const path = require('path');
 const cors = require('cors');
@@ -13,6 +14,8 @@ const port = 3001;
 // const port = 80;
 
 app.use(cors());
+
+app.use(compression());
 
 app.use('/loaderio-f0c4f91c95f5e6cb7a3b90b29cbe5bce.txt', express.static(path.join(__dirname,'../loaderio-f0c4f91c95f5e6cb7a3b90b29cbe5bce.txt')))
 

@@ -1,4 +1,7 @@
+const compression = require('compression');
+
 const Models = require('./Models.js');
+
 
 function getAllBookings(req, res) {
   const { listing_id } = req.params;
@@ -6,6 +9,9 @@ function getAllBookings(req, res) {
     if (err) {
       res.status(404).send(err);
     } else {
+      if (!res.getHeader('Cache-Control')) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000');
+      }
       res.status(201).send(data);
     }
   });

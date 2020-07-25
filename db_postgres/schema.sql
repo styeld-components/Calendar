@@ -74,6 +74,9 @@ VACUUM bookings;
 ALTER TABLE bookings ADD CONSTRAINT fk_listing FOREIGN KEY (listing_id) REFERENCES listings(listing_id);
 ALTER TABLE bookings ADD CONSTRAINT fk_billing FOREIGN KEY (billingInfo) REFERENCES billingInfo(billing_id);
 
-CREATE INDEX listing_idx ON bookings(listing_id);
-CREATE INDEX billing_idx ON bookings(billingInfo);
+CREATE INDEX listing_idx_hash ON bookings(listing_id);
+CREATE INDEX billing_idx_hash ON bookings(billingInfo);
+
+CREATE listing_idx_hash ON bookings USING HASH (listing_id);
+CREATE billing_idx_hash ON bookings USING HASH (billingInfo);
 

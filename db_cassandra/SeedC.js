@@ -50,10 +50,10 @@ function bookingsByListingGen(i, writer, encoding, callback) {
       const data = `${listing_id},${nightly_fee},${cleaning_fee},${occupancy_tax_rate},${avg_rating},${reviews},${city},${max_capacity},${booking_id},${checkin},${checkout},${adults},${children},${infants},${payment_type},${first_name},${last_name},${billing_id},${CCNum}\n`
 
       if (booking_id % 100000) {
-        console.log('dun, dun, dun, antoher 100k bookings bites the...csv', booking_id);
+        console.log('dun, dun, dun, another 100k bookings bites the...csv', booking_id);
       }
       if (listing_id % 100000) {
-        console.log('dun, dun, dun, antoher 100k listings bites the...csv', listing_id);
+        console.log('dun, dun, dun, another 100k listings bites the...csv', listing_id);
       }
       if (i === 0) {
         writer.write(data, encoding, callback);
